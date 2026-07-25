@@ -1,0 +1,3 @@
+- Fix 1: file QR scan button on admin scanner (custom-file-scan should trigger html5-qrcode file decode reliably).
+- Fix 2: profile photo upload currently uses Cropper.js but Cropper library is not included; implement in-app circular crop/zoom without new libraries, with Russian UI labels (Сохранить/Отмена) and write to Supabase avatar_url.
+

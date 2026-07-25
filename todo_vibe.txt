@@ -1,0 +1,11 @@
+VIBE TODO (no backend changes)
+
+Planned UI polish items:
+1) Add global smoother feel (tap highlight, transition durations, reduced blur usage)
+2) Add reusable “visual sections” styles to reduce wall-of-text look
+3) Make loaders/skeletons for “Загрузка…” screens
+4) Improve iconography/CTAs spacing on mobile screens
+
+Status:
+- QR + Profile photo editor already handled
+- Next: apply non-boring UI polish via CSS only

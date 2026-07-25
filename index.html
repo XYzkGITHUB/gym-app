@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Gym Fit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Russo+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style2.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+
+</head>
+<body>
+  <main class="page" aria-label="Gym Fit">
+    <header class="top-bar" id="top-bar" style="display: none;">
+      <img src="imgs/GF-logo.png" alt="Gym Fit Logo" class="top-bar__logo" />
+      <div class="top-bar__right-group">
+        <button id="streak-trophy-btn" class="trophy-btn" aria-label="Рейтинг стриков">
+          <i data-lucide="trophy"></i>
+        </button>
+        <div class="streak-badge" id="streak-badge">
+          <i data-lucide="flame" class="streak-icon"></i>
+          <span class="streak-count" id="streak-count">0</span>
+          <span class="streak-label">ДНЕЙ</span>
+          <button id="streak-info-btn" class="streak-info-btn" aria-label="Информация о стрике">
+            <i data-lucide="help-circle"></i>
+          </button>
+        </div>
+        <div id="admin-actions" style="display: none;">
+          <button id="kiosk-mode-toggle" class="streak-info-btn" aria-label="Режим киоска" style="opacity: 1; margin-left: 10px;">
+              <i data-lucide="door-open" style="width: 27px; height: 27px;"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="loader" id="gym-loader" aria-hidden="true">
+        <div class="loader-aurora" aria-hidden="true">
+          <span class="loader-aurora__blob loader-aurora__blob--1"></span>
+          <span class="loader-aurora__blob loader-aurora__blob--2"></span>
+        </div>
+
+        <div class="loader-emblem">
+          <span class="loader-halo"></span>
+          <img src="imgs/GF-logo.png" alt="Gym Fit" class="loader-logo" />
+        </div>
+
+        <div class="loader__text" id="gym-loader-text">Добро пожаловать в <span>Gym Fit</span></div>
+
+        <div class="loader-progress" aria-hidden="true"><span class="loader-progress__fill"></span></div>
+      </div>
+    </section>
+
+
+    <div class="content" id="gym-content">
+      <div class="auth-container" style="display: none;">
+        <div class="auth-header">
+          <h1 id="auth-title">Вход</h1>
+          <p id="auth-subtitle">С возвращением</p>
+        </div>
+        
+        <form id="auth-form" class="auth-form">
+          <div class="input-group" id="name-group" style="display: none;">
+            <div style="display:flex; gap:10px;">
+              <input type="text" id="auth-first-name" placeholder="Имя" />
+              <input type="text" id="auth-last-name" placeholder="Фамилия" />
+            </div>
+          </div>
+
+          <div class="input-group" id="identifier-group">
+            <input type="email" id="auth-identifier" placeholder="Эл. почта" required />
+          </div>
+          <div class="input-group" id="password-group">
+            <input type="password" id="auth-password" placeholder="Пароль" required />
+            <button type="button" class="password-toggle" id="toggle-pass" aria-label="Показать пароль">
+              <i data-lucide="eye" class="eye-icon"></i>
+              <i data-lucide="eye-off" class="eye-off-icon" style="display: none;"></i>
+            </button>
+          </div>
+
+          <div class="input-group" id="confirm-password-group" style="display: none;">
+            <input type="password" id="auth-confirm-password" placeholder="Повторите пароль" />
+            <button type="button" class="password-toggle" id="toggle-confirm-pass" aria-label="Показать пароль">
+              <i data-lucide="eye" class="eye-icon"></i>
+              <i data-lucide="eye-off" class="eye-off-icon" style="display: none;"></i>
+            </button>
+          </div>
+          
+          <button type="submit" id="auth-submit" class="btn-primary">Войти</button>
+        </form>
+      </div>
+    </div>
+
+    <nav class="bottom-nav" id="bottom-nav" aria-label="Навигация">
+      <div class="nav-item">
+        <i data-lucide="qr-code" class="nav-icon"></i>
+        <span class="nav-label">Мой QR-код</span>
+      </div>
+      <div class="nav-item">
+        <i data-lucide="calendar-days" class="nav-icon"></i>
+        <span class="nav-label">Расписание</span>
+      </div>
+      <div class="nav-item">
+        <i data-lucide="credit-card" class="nav-icon"></i>
+        <span class="nav-label">Абонемент</span>
+      </div>
+      <div class="nav-item">
+        <i data-lucide="user" class="nav-icon"></i>
+        <span class="nav-label">Профиль</span>
+      </div>
+      <div class="nav-item">
+        <i data-lucide="layout-grid" class="nav-icon"></i>
+        <span class="nav-label">Другое</span>
+      </div>
+    </nav>
+  </main>
+
+  <div id="scan-flash-overlay" class="scan-flash-overlay"></div>
+
+  <audio id="kiosk-accept-sound" preload="auto"></audio>
+  <audio id="kiosk-decline-sound" preload="auto"></audio>
+
+  <button id="theme-toggle" class="theme-toggle-fab" aria-label="Переключить тему">
+    <i data-lucide="sun" id="theme-icon-sun" class="theme-icon"></i>
+    <i data-lucide="moon" id="theme-icon-moon" class="theme-icon" style="display: none;"></i>
+  </button>
+
+  <!-- Supabase Library -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+  <!-- Local secrets (gitignored) -->
+  <script src="config.js"></script>
+  <script src="sheets-sync.js"></script>
+  <script src="kiosk.js"></script>
+  <script src="script2.js"></script>
+  <script src="script3.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+
+<!-- do not touch this line of code! This is a app for mobile and can be used for computers and wide screens, however this will be turned into a apk so make sure you do not use this as a website/launcher web or etc! Make sure all text is russian! -->

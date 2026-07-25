@@ -1,0 +1,2433 @@
+/* other half of the css */
+/* Bottom Navigation GUI */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 78px;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border);
+  display: none; /* Скрыто до входа */
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 10px;
+  z-index: 2000;
+  box-shadow: none;
+}
+
+body.show-nav .bottom-nav {
+  display: flex;
+  /* See the .content rule in style.css for why the transform half of this
+     reveal must not use fill-mode: forwards (containing-block trap for
+     position: fixed descendants). */
+  animation: contentFadeIn 0.5s ease forwards, contentRise 0.5s ease;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex: 1;
+  height: 100%;
+  color: var(--muted);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+}
+/* Active Indicator Dot */
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 9px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-item.is-active {
+  color: var(--accent);
+}
+
+@media (hover: hover) {
+  .nav-item:not(.is-active):hover {
+    color: var(--fg);
+  }
+}
+
+.nav-item.is-active::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.nav-item.is-active .nav-icon {
+  transform: translateY(-2px) scale(1.15);
+}
+
+.nav-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.nav-item.is-active .nav-label {
+  transform: none;
+  opacity: 1;
+}
+
+.scan-image-file-btn {
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background: var(--accent-gradient);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px -5px rgba(212, 175, 55, 0.3);
+  cursor: pointer;
+  z-index: 100;
+  transition: transform 0.2s ease;
+}
+
+.scan-image-file-btn:active {
+  transform: scale(0.9);
+}
+
+/* QR Code Section Design */
+.qr-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  animation: content-fade-in 0.5s ease-out;
+  width: 100%;
+}
+
+/* Hide the default scanner "Scan an image file" UI (html5-qrcode) */
+#reader__dashboard_section_csr span,
+#html5-qrcode-button-file-selection,
+#reader__dashboard_section_csr input[type="file"],
+#html5-qrcode-anchor-scan-type-change {
+  display: none !important;
+}
+
+
+/* Убиваем текст про дроп файлов, если он пролезет через JS */
+#reader__dashboard_section_csr div[style*="border: 3px dashed"] {
+  display: none !important;
+}
+
+#reader__dashboard_section_csr input[type="file"] {
+  display: none;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 22px;
+  width: 100%;
+  box-shadow: var(--shadow-soft, 0 4px 20px -5px rgba(0,0,0,0.1));
+  transition: border-color 0.25s var(--ease, ease), box-shadow 0.25s var(--ease, ease);
+}
+
+.qr-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+
+.qr-wrapper {
+  background: #fff;
+  padding: 16px;
+  border-radius: 24px;
+  box-shadow: none;
+  margin-bottom: 25px;
+}
+
+
+.qr-user-info {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.qr-user-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.qr-user-email {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.qr-user-id {
+  font-size: 12px;
+  color: #555; /* Dark gray for white QR background */
+  margin-top: 5px;
+  letter-spacing: 0.8px;
+}
+
+.qr-description {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 260px;
+}
+
+/* Schedule Section */
+.schedule-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  animation: content-fade-in 0.5s ease-out;
+}
+
+.schedule-title {
+  text-align: center;
+  color: var(--accent);
+  font-size: 1rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.schedule-header {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.calendar-select {
+  background: var(--surface-soft);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-weight: 700;
+  outline: none;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.04);
+}
+
+.calendar-select option {
+  color: #000;
+  background-color: #ffffff;
+  touch-action: auto;
+}
+
+.weekdays-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  justify-items: center;
+  width: 100%;
+}
+
+.calendar-day {
+  width: 100%;
+  max-width: 42px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: system-ui, sans-serif;
+  color: var(--fg);
+  background: var(--surface-soft);
+  box-shadow: none;
+}
+
+.calendar-day.today {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: none;
+}
+
+.calendar-day.future {
+  border-color: rgba(17, 24, 39, 0.08);
+  color: var(--muted);
+  background: var(--surface);
+}
+
+.calendar-day.attended {
+  background: rgba(255, 204, 0, 0.2) !important;
+  border-color: var(--accent) !important;
+  color: var(--fg) !important;
+}
+
+/* Стили для раздела абонемента */
+.subscription-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: content-fade-in 0.5s ease-out;
+  padding: 0 10px;
+}
+
+.subscription-card {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 32px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #111 url('imgs/Tier-Subscription.png') no-repeat center center;
+  background-size: 150%;
+  aspect-ratio: 1 / 1;
+  box-shadow: none;
+}
+
+.subscription-card::before {
+  content: '';
+  position: absolute;
+  top: -150%;
+  left: -150%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.08), transparent);
+  transform: rotate(45deg);
+  animation: shine 5s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-150%) translateY(-150%) rotate(45deg); }
+  20%, 100% { transform: translateX(150%) translateY(150%) rotate(45deg); }
+}
+
+.subscription-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.subscription-top {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.subscription-title {
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.purchase-date {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.subscription-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.presence-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(17, 24, 39, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent-gradient);
+  box-shadow: 0 0 18px rgba(161, 127, 75, 0.18);
+}
+
+.expiration-days {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--accent);
+  text-align: right;
+}
+
+/* Profile Styles */
+.profile-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: content-fade-in 0.5s ease-out;
+}
+
+.profile-avatar {
+  width: 90px;
+  height: 90px;
+  background: var(--accent-gradient);
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  box-shadow: none;
+  line-height: 1;
+}
+
+.profile-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0 0 5px 0;
+  color: var(--fg);
+}
+
+.profile-email {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+
+.profile-info-card {
+  width: 100%;
+  background: var(--surface);
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: system-ui, sans-serif;
+}
+
+.info-value {
+  color: var(--fg);
+  font-weight: 700;
+  font-size: 13px;
+}
+.btn-logout {
+  background: var(--surface-soft);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  padding: 8px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:active {
+  transform: scale(0.95);
+  background: rgba(15, 23, 42, 0.06);
+  border-color: rgba(15, 23, 42, 0.18);
+}
+
+.profile-actions {
+  width: 100%;
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-info-card--note {
+    background: var(--accent-soft);
+    border-color: rgba(212, 175, 55, 0.2);
+}
+
+/* Other & Planner Styles */
+.other-container, .planner-container {
+  width: 100%;
+  animation: content-fade-in 0.5s ease-out;
+}
+
+.menu-card {
+  background: var(--surface);
+  border: 1px solid var(--border); 
+  border-radius: 20px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.menu-card:active {
+  transform: scale(0.97);
+  background: var(--surface-soft);
+}
+
+.menu-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.menu-card-title {
+  color: var(--fg);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.menu-card-desc {
+  color: var(--muted);
+  font-size: 12px;
+  max-width: 220px;
+}
+
+.menu-card-arrow {
+  width: 20px;
+  color: var(--muted);
+}
+
+.planner-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  position: relative;
+  padding-top: 0;
+}
+
+.back-arrow-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  padding: 8px;
+  position: absolute;
+  left: 0;
+  cursor: pointer;
+}
+
+.planner-title {
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  color: var(--fg);
+}
+
+.plan-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 1.4;
+  transition: border-color 0.25s var(--ease, ease), background 0.25s var(--ease, ease), transform 0.15s var(--ease, ease), box-shadow 0.25s var(--ease, ease);
+}
+
+.plan-item[style*="cursor: pointer"]:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) {
+  .plan-item[style*="cursor: pointer"]:hover {
+    border-color: var(--accent);
+    box-shadow: 0 6px 18px -8px rgba(0,0,0,0.3);
+  }
+}
+
+.plan-day { font-size: 14px; color: var(--muted); font-weight: 600; }
+
+.plan-input {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+  text-align: right;
+  width: 60%;
+  outline: none;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.plan-textarea {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--fg);
+  padding: 14px;
+  width: 100%;
+  min-height: 120px;
+  outline: none;
+  font-family: inherit;
+  resize: none;
+  box-shadow: 0 10px 20px rgba(17, 24, 39, 0.04);
+}
+
+.planner-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 20px;
+}
+
+/* Modal Password Input with Toggle */
+#new-client-pass {
+  /* This input is inside a modal, so it gets new base styles. */
+  /* We only need to override padding for the password toggle button. */
+  padding-right: 45px !important;
+}
+
+#toggle-new-client-pass {
+  color: var(--muted);
+  transition: color 0.3s ease;
+}
+
+#toggle-new-client-pass:hover {
+  color: #999;
+}
+
+#toggle-new-client-pass.is-visible {
+  color: var(--accent);
+}
+
+/* Inbox FAB */
+.inbox-fab {
+  position: fixed;
+  bottom: 102px;
+  left: 20px; /* Moved to the left */
+  right: auto; /* Unset the right property */
+  width: 56px;
+  height: 56px;
+  background: var(--accent);
+  color: #111;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  z-index: 2001; /* Must be higher than bottom-nav (2000) */
+}
+.inbox-fab:active { transform: scale(0.94); }
+
+/* Admin Clients Inbox FAB. Anchored bottom-right (stacked above the theme
+   toggle fab, which also lives bottom-right) rather than sharing the
+   customer inbox fab's bottom-left spot. */
+.admin-clients-inbox-fab {
+  position: fixed;
+  bottom: 158px; /* Stacked above .theme-toggle-fab (bottom: 92px) with a gap */
+  right: 20px;
+  left: auto;
+  width: 56px;
+  height: 56px;
+  background: var(--accent);
+  color: #111;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  z-index: 2001; /* Must be higher than bottom-nav (2000) */
+}
+.admin-clients-inbox-fab:active { transform: scale(0.94); }
+
+.inbox-fab:active { transform: scale(0.94); }
+
+.inbox-action-fab {
+  position: fixed;
+  bottom: 32px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: var(--accent);
+  color: #111;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  z-index: 101;
+}
+.faq-edit-fab {
+  position: fixed;
+  left: 18px;
+  bottom: 92px;
+  z-index: 2002;
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition: transform 0.2s;
+}
+.faq-edit-fab:active { transform: scale(0.94); }
+#reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 20px;
+}
+
+@keyframes content-fade-in {
+  /* opacity-only: this animation runs on page containers (.schedule-container,
+     .subscription-container, etc.) that have `position: fixed` FABs nested
+     inside them (e.g. .admin-clients-inbox-fab). Any transform - even
+     translateY - makes the animating element a containing block for those
+     fixed descendants for the animation's duration, so the FAB renders in
+     the wrong (in-flow-ish) spot and visibly snaps to its real fixed
+     position once the animation ends. Dropping the transform avoids that
+     entirely; opacity never creates a containing block. */
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* =============================================== */
+/* DESKTOP / WIDE SCREEN LAYOUT (PC Compatibility) */
+/* =============================================== */
+@media (min-width: 768px) {
+  /* --- Global Layout & Scrolling --- */
+  html, body {
+    position: static;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .page {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  /* --- Sidebar Navigation (replaces bottom-nav) --- */
+  .bottom-nav {
+    flex-direction: column;
+    width: 240px;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    bottom: auto;
+    border-top: none;
+    border-right: 1px solid var(--border);
+    justify-content: flex-start;
+    padding: 90px 15px 20px 15px;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .nav-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 15px;
+    height: auto;
+    padding: 12px 15px;
+    border-radius: 12px;
+    width: 100%;
+    flex: 0 0 auto;
+  }
+  .nav-item::after {
+    left: auto;
+    right: 12px;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%) scale(0);
+  }
+  .nav-item.is-active::after {
+    transform: translateY(-50%) scale(1);
+  }
+  .nav-item.is-active .nav-icon { transform: none; }
+  .nav-label { font-size: 13px; text-transform: none; font-weight: 600; }
+  .nav-item.is-active .nav-label { transform: none; opacity: 1; }
+
+  /* --- Main Content Area ---
+     Centered in the full viewport until the sidebar nav is actually
+     shown (body.show-nav, after login). Reserving its 240px gutter
+     ahead of time made the login form and welcome greeting sit
+     off-center, then appear to "snap" once the sidebar showed up. */
+  .content {
+    max-width: 900px;
+    width: 100%;
+    margin: 74px auto 0;
+    height: auto;
+    min-height: calc(100vh - 74px);
+    padding: 40px;
+    overflow-y: visible;
+  }
+
+  body.show-nav .content {
+    max-width: none;
+    width: calc(100% - 240px);
+    margin-left: 240px;
+    margin-top: 74px;
+  }
+
+  .auth-container { max-width: 420px; margin: 60px auto; background: var(--surface); }
+  .qr-container, .schedule-container, .subscription-container, .profile-container, .other-container, .planner-container { max-width: 900px; margin: 0 auto; padding: 0; width: 100%; }
+
+  /* The calendar's day cells are sized for a narrow phone column. Just
+     bumping cell size isn't enough at the 900px desktop container width:
+     `repeat(7, 1fr)` still stretches each column track across the full
+     width, so a 64px cell ends up centered in a much wider ~128px track,
+     leaving huge empty gutters beyond the actual `gap`. Capping the grid's
+     own width keeps the columns (and gaps) proportionate to the cells.
+     `width: 100%` (not just max-width) matters here: .schedule-container is
+     a column flexbox, and a flex item with `margin: auto` on the cross axis
+     but no definite width falls back to shrink-to-fit sizing instead of
+     stretching - for .weekdays-grid, whose <span> children are just short
+     text with no intrinsic width, that collapsed the whole grid down to its
+     content size and squashed all 7 day labels together. */
+  .calendar-grid, .weekdays-grid {
+    width: 100%;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .calendar-grid, .weekdays-grid { gap: 14px; }
+  .calendar-day { max-width: 64px; font-size: 14px; }
+  .weekdays-grid { font-size: 12px; }
+
+  /* --- Component Adjustments --- */
+  .modal-box { max-width: 500px; }
+  .inbox-fab, .inbox-action-fab, .faq-edit-fab { bottom: 40px; }
+  body.show-nav .inbox-fab, body.show-nav .inbox-action-fab, body.show-nav .faq-edit-fab { left: calc(240px + 40px); right: auto; }
+
+  /* Admin clients FAB stays bottom-right (stacked above .theme-toggle-fab,
+     which is bottom: 40px/right: 40px here) instead of following the
+     sidebar like the other FABs. */
+  .admin-clients-inbox-fab { bottom: 108px; right: 40px; left: auto; }
+}
+
+/* =============================================== */
+/* THEME TOGGLE & LIGHT MODE */
+/* =============================================== */
+
+.theme-toggle-fab {
+  position: fixed;
+  bottom: 92px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: var(--surface);
+  color: var(--fg);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+.theme-toggle-fab:active {
+  transform: scale(0.9);
+}
+.theme-toggle-fab .theme-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Move theme toggle down on auth screen to avoid overlap */
+body:not(.is-logged-in) .theme-toggle-fab {
+  bottom: 20px;
+}
+
+/* Brightness scale popup, anchored above the theme toggle button while in
+   light theme. Drag/scroll the track to dim or brighten the light theme;
+   pulling it all the way to the bottom switches to dark mode. */
+.theme-scale-popup {
+  position: fixed;
+  width: 46px;
+  height: 170px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 23px;
+  box-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.35);
+  z-index: 2200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  opacity: 0;
+  transform: scale(0.85) translateY(8px);
+  transform-origin: bottom right;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+.theme-scale-popup.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+.theme-scale-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.theme-scale-track {
+  position: relative;
+  width: 4px;
+  flex: 1;
+  margin: 10px 0;
+  border-radius: 999px;
+  /* Plain neutral rail - no color fade. The 4 dots below carry all the
+     color; the track itself is just a click/drag surface. */
+  background: var(--border);
+  cursor: pointer;
+  touch-action: none;
+}
+/* The 4 fixed stops - small solid-color dots, evenly spaced along the
+   track, each previewing that step's actual accent color. Clicks/drags on
+   the track (not these dots specifically) drive the selection; see
+   stepFromClientY in script.js. */
+.theme-scale-dot {
+  position: absolute;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+  z-index: 0;
+}
+.theme-scale-dot--1 { top: 0%;       background: #0EA5E9; }
+.theme-scale-dot--2 { top: 33.3333%; background: #8B5CF6; }
+.theme-scale-dot--3 { top: 66.6666%; background: #6C63FF; }
+.theme-scale-dot--4 { top: 100%;     background: #D4AF37; }
+.theme-scale-thumb {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--accent);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  /* Discrete step changes animate along an overshoot curve (easeOutBack) so
+     the thumb springs past its target and settles back - a "bounce" rather
+     than a linear slide. */
+  transition: top 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
+  z-index: 1;
+}
+.theme-scale-thumb:active {
+  cursor: grabbing;
+}
+/* A second, independent bounce (squash/stretch via scale) layered on top of
+   the position transition above - fired once per step change, see
+   applyThemeStep() in script.js. */
+@keyframes themeThumbSettle {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  35%  { transform: translate(-50%, -50%) scale(1.32); }
+  58%  { transform: translate(-50%, -50%) scale(0.86); }
+  78%  { transform: translate(-50%, -50%) scale(1.08); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+.theme-scale-thumb.is-bouncing {
+  animation: themeThumbSettle 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Applied for ~0.5s while switching themes so every color-driven property
+   crossfades (e.g. the accent flipping from light-theme blue to dark-theme
+   gold) instead of snapping instantly. */
+body.theme-transitioning,
+body.theme-transitioning * {
+  transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease,
+    fill 0.45s ease, box-shadow 0.45s ease !important;
+}
+
+/* --- Light Theme (soft gray + sky blue) --- */
+body.light-theme {
+  --accent: #0EA5E9;                  /* Sky blue - primary interactive color */
+  --accent-gold: #D4AF37;             /* Reserved: flame icon + premium highlights */
+  --bg: #F2F5F8;                      /* Soft gray page bg (not stark white) so white
+                                          cards/surfaces actually pop off it */
+  --glass: rgba(219, 231, 241, 0.6);  /* Soft gray-blue glass panel, was a dark
+                                          value inherited from :root - showed up as a
+                                          jarring dark card on the light page. */
+  --border: #DEE6ED;
+  --fg: #1E293B;                      /* Soft slate, not harsh pure black */
+  --muted: #64748B;
+  --surface: #ffffff;
+  --surface-soft: #EAF1F8;            /* Soft blue-gray fill for cards/chips */
+  --accent-gradient: linear-gradient(135deg, #38BDF8, #0284C7);
+  --accent-soft: rgba(14, 165, 233, 0.14);
+  --accent-secondary: rgba(14, 165, 233, 0.1);
+}
+
+/* --- Theme step 2: "Premium purple" (light theme + purple accent) --- */
+body.light-theme.theme-purple {
+  --accent: #8B5CF6;
+  --bg: #F7F4FC;
+  --glass: rgba(231, 222, 245, 0.6);
+  --border: #E4D9F7;
+  --surface-soft: #F1EBFA;
+  --accent-gradient: linear-gradient(135deg, #A78BFA, #7C3AED);
+  --accent-soft: rgba(139, 92, 246, 0.14);
+  --accent-secondary: rgba(139, 92, 246, 0.1);
+}
+
+/* --- Theme step 3: dark, blue-purple accent (between the gold-default
+   dark theme and the light steps - keeps --bg near-black but swaps the
+   gold accent for a blue/purple mix everywhere var(--accent) is used). --- */
+body.theme-blue-purple {
+  --bg: #0A0A12;
+  --surface: #141420;
+  --surface-soft: #1B1B29;
+  --accent: #6C63FF;
+  --accent-gradient: linear-gradient(135deg, #38BDF8, #8B5CF6);
+  --accent-soft: rgba(108, 99, 255, 0.18);
+  --border: rgba(139, 122, 255, 0.16);
+}
+
+/* Specific Light Theme Overrides */
+body.light-theme .streak-badge {
+  background: var(--accent-secondary);
+  border: 1px solid var(--accent-soft);
+  color: var(--fg);
+}
+body.light-theme .streak-icon {
+  fill: var(--accent);
+  color: var(--accent);
+}
+body.light-theme .streak-info-btn {
+  color: var(--muted);
+}
+body.light-theme .admin-status-banner {
+  background: var(--accent-gradient);
+  color: #fff;
+}
+body.light-theme .auth-container {
+  background: transparent;
+  border: none;
+  color: var(--fg);
+}
+body.light-theme .auth-header p {
+  color: var(--muted);
+}
+body.light-theme .btn-primary {
+  background: var(--accent-gradient);
+  color: #fff;
+  border: none;
+  box-shadow: 0 10px 24px -10px rgba(14, 165, 233, 0.5);
+}
+body.light-theme .btn-primary:active {
+  filter: brightness(0.92);
+}
+@media (hover: hover) {
+  body.light-theme .btn-primary:not(:disabled):hover {
+    box-shadow: 0 12px 28px -8px rgba(14, 165, 233, 0.55);
+  }
+}
+body.light-theme .top-bar,
+body.light-theme .bottom-nav {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: var(--border);
+}
+body.light-theme .nav-item {
+  color: var(--muted);
+}
+body.light-theme .nav-item.is-active {
+  color: var(--accent);
+}
+body.light-theme .nav-item.is-active::after {
+  background: var(--accent);
+}
+body.light-theme .scan-image-file-btn {
+  background: var(--accent-gradient);
+  color: #fff;
+  box-shadow: none;
+}
+body.light-theme .qr-wrapper {
+  box-shadow: none;
+  border: 1px solid var(--border);
+}
+body.light-theme .qr-user-id,
+body.light-theme .qr-description {
+  color: var(--muted);
+}
+body.light-theme .calendar-day {
+  /* var(--surface) is white in light theme, same as the page background -
+     with only a 1px border to go on, cells read as invisible/empty boxes
+     floating in whitespace. A soft blue-gray fill gives them actual presence. */
+  background: var(--surface-soft);
+  border-color: var(--border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+body.light-theme .calendar-day.today {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+body.light-theme .calendar-day.future {
+  color: #A9B7C4;
+  background: #F7FAFC;
+}
+body.light-theme .calendar-day.attended {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+}
+body.light-theme .subscription-card {
+  background: var(--surface);
+  border: 2px dashed var(--accent);
+}
+body.light-theme .subscription-card::before {
+  display: none; /* remove shine */
+}
+body.light-theme .subscription-overlay {
+  background: none;
+  justify-content: space-between;
+}
+body.light-theme .subscription-overlay[style*="dashed"] {
+  border: 1px dashed var(--border);
+}
+body.light-theme .subscription-overlay .presence-text,
+body.light-theme .subscription-overlay div[style*="var(--accent)"] {
+  color: var(--fg);
+}
+body.light-theme .subscription-overlay[style*="dashed"] div {
+  color: var(--fg);
+}
+body.light-theme .profile-avatar {
+  background: var(--accent-secondary);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+body.light-theme .profile-info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+body.light-theme .profile-info-card--note {
+    background: var(--surface-soft);
+    border-color: var(--border);
+}
+body.light-theme .profile-info-card--note .info-label {
+    color: var(--fg);
+}
+body.light-theme .btn-logout {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+body.light-theme .btn-logout:active {
+  background: var(--surface-soft);
+}
+body.light-theme .menu-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+body.light-theme .menu-card:active {
+  background: var(--surface-soft);
+}
+body.light-theme .menu-card-title {
+  color: var(--fg);
+  font-weight: 700;
+}
+body.light-theme .menu-card-desc {
+  color: var(--muted);
+}
+body.light-theme .plan-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+body.light-theme .plan-input {
+  color: var(--fg);
+}
+body.light-theme .input-group input {
+    background: var(--surface-soft);
+    border-color: var(--border);
+}
+body.light-theme .input-group input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-secondary);
+}
+body.light-theme #new-client-pass {
+  border: 1px solid var(--border) !important;
+}
+body.light-theme .inbox-fab,
+body.light-theme .admin-clients-inbox-fab,
+body.light-theme .inbox-action-fab {
+  background: var(--accent-gradient);
+  color: #fff;
+  border: none;
+}
+body.light-theme .faq-edit-fab {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--accent);
+}
+body.light-theme .custom-toast {
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(30, 41, 59, 0.12);
+}
+body.light-theme .custom-toast.error {
+  border-color: rgba(220, 38, 38, 0.35);
+  color: #B91C1C;
+}
+body.light-theme .custom-toast.success {
+  border-color: rgba(14, 165, 233, 0.35);
+  color: #0369A1;
+}
+body.light-theme .modal-box {
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(30, 41, 59, 0.16);
+}
+body.light-theme .modal-content input,
+body.light-theme .modal-content select,
+body.light-theme .modal-content textarea {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  color: var(--fg);
+}
+body.light-theme .modal-content select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E293B' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+body.light-theme .modal-content select option {
+  background-color: var(--surface);
+  color: var(--fg);
+}
+body.light-theme .modal-content input:focus,
+body.light-theme .modal-content select:focus,
+body.light-theme .modal-content textarea:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--accent-secondary);
+}
+
+@media (min-width: 768px) {
+  .theme-toggle-fab {
+    bottom: 40px;
+    right: 40px;
+  }
+}
+
+/* =============================================== */
+/* KIOSK MODE STYLES */
+/* =============================================== */
+
+/* Style changes for top-bar in kiosk mode */
+.top-bar.kiosk-active .streak-badge,
+.top-bar.kiosk-active .top-bar__logo {
+    display: none !important;
+}
+.top-bar.kiosk-active {
+    justify-content: flex-end;
+}
+
+#kiosk-mode-container {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 2500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: sectionFade 0.4s ease-out;
+}
+
+.kiosk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    max-height: 600px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Ambient gym photos floating in the leftover space on very wide kiosk
+   screens. Hidden below 1500px, where that space is needed by the grid.
+   Sized off the actual leftover gutter (viewport minus the 1200px grid)
+   so they scale up on bigger screens without ever fighting the grid for
+   space - the grid still wins visually either way since it paints above
+   these at z-index: 1. */
+.kiosk-ambient {
+    display: none;
+    position: absolute;
+    top: 50%;
+    width: clamp(240px, calc((100vw - 1200px) / 2 + 60px), 460px);
+    aspect-ratio: 4 / 5;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.65;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 58%, transparent 90%);
+    mask-image: radial-gradient(ellipse at center, #000 58%, transparent 90%);
+}
+.kiosk-ambient--left { left: 1.5vw; animation: kioskFloatLeft 12s ease-in-out infinite; }
+.kiosk-ambient--right { right: 1.5vw; animation: kioskFloatRight 13s ease-in-out infinite; }
+.kiosk-ambient img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.15) brightness(0.85) contrast(1.05);
+}
+
+@keyframes kioskFloatLeft {
+    0%, 100% { transform: translateY(calc(-50% - 12px)) rotate(-1.5deg); }
+    50% { transform: translateY(calc(-50% + 16px)) rotate(1deg); }
+}
+@keyframes kioskFloatRight {
+    0%, 100% { transform: translateY(calc(-50% + 14px)) rotate(1.5deg); }
+    50% { transform: translateY(calc(-50% - 12px)) rotate(-1deg); }
+}
+
+/* Background decoration only: a faint lattice of connected square outlines,
+   echoing the gym's own diamond-shaped ceiling light fixtures. Sits behind
+   the grid/ambient photos and never grabs attention on its own - it just
+   twinkles quietly, staggered per square so it reads as "often" moving
+   rather than a single slow breathing pulse. */
+.kiosk-lightgrid {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+.kiosk-light-cluster { position: absolute; }
+.kiosk-light-cluster--top { top: 5%; left: 6%; }
+.kiosk-light-cluster--bottom { bottom: 6%; right: 8%; }
+
+.kiosk-light-square {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    transform: rotate(45deg);
+    animation: kioskLightPulse 3.2s ease-in-out infinite;
+}
+.kiosk-light-link {
+    position: absolute;
+    width: 46px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    transform-origin: left center;
+    animation: kioskLightPulse 3.2s ease-in-out infinite;
+}
+
+.kiosk-light-cluster--top .kiosk-sq-1 { top: 0;    left: 0; }
+.kiosk-light-cluster--top .kiosk-sq-2 { top: 46px; left: 70px; animation-delay: 0.5s; }
+.kiosk-light-cluster--top .kiosk-sq-3 { top: 92px; left: 140px; animation-delay: 1s; }
+.kiosk-light-cluster--top .kiosk-sq-4 { top: 46px; left: 210px; animation-delay: 1.5s; }
+.kiosk-light-cluster--top .kiosk-ln-1 { top: 32px; left: 46px; transform: rotate(33deg); animation-delay: 0.25s; }
+.kiosk-light-cluster--top .kiosk-ln-2 { top: 78px; left: 116px; transform: rotate(-33deg); animation-delay: 0.75s; }
+.kiosk-light-cluster--top .kiosk-ln-3 { top: 78px; left: 186px; transform: rotate(33deg); animation-delay: 1.25s; }
+
+.kiosk-light-cluster--bottom .kiosk-sq-1 { top: 0;    left: 0;    width: 48px; height: 48px; animation-delay: 0.3s; }
+.kiosk-light-cluster--bottom .kiosk-sq-2 { top: 40px; left: 56px; width: 48px; height: 48px; animation-delay: 0.9s; }
+.kiosk-light-cluster--bottom .kiosk-sq-3 { top: 80px; left: 112px; width: 48px; height: 48px; animation-delay: 1.5s; }
+.kiosk-light-cluster--bottom .kiosk-ln-1 { top: 24px; left: 36px; width: 40px; transform: rotate(35deg); animation-delay: 0.55s; }
+.kiosk-light-cluster--bottom .kiosk-ln-2 { top: 64px; left: 92px; width: 40px; transform: rotate(35deg); animation-delay: 1.15s; }
+
+@keyframes kioskLightPulse {
+    0%, 100% { opacity: 0.08; }
+    50% { opacity: 0.28; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kiosk-light-square, .kiosk-light-link { animation: none; opacity: 0.2; }
+}
+
+@media (max-width: 900px) {
+    .kiosk-lightgrid { display: none; }
+}
+
+.kiosk-logo {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    height: 34px;
+    width: auto;
+    z-index: 2600;
+    opacity: 0.95;
+}
+
+@media (min-width: 1500px) {
+    .kiosk-ambient { display: block; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kiosk-ambient--left, .kiosk-ambient--right { animation: none; transform: translateY(-50%); }
+}
+
+.kiosk-card {
+    position: relative;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    /* Always-on ambient color cycle (blue -> blue-violet -> gold -> teal ->
+       back to blue), directly on border-color/box-shadow rather than a
+       masked pseudo-element - mask-composite support is inconsistent across
+       browsers/kiosk devices and can render nothing at all, which is why the
+       old ::before/::after ring effects below weren't reliably visible.
+       This one has no such dependency and uses a wide, high-opacity glow so
+       it reads clearly even at a glance. */
+    animation: kioskCardColorCycle 9s ease-in-out infinite;
+    border-width: 2px;
+}
+#kiosk-card-scan {
+    /* Negative delay starts this card partway through the cycle, so the
+       two cards never fade in sync with each other. */
+    animation-delay: -4.5s;
+}
+@keyframes kioskCardColorCycle {
+    0%   { border-color: #38BDF8; box-shadow: 0 0 36px 0px rgba(56, 189, 248, 0.65); }
+    25%  { border-color: #818CF8; box-shadow: 0 0 36px 0px rgba(129, 140, 248, 0.65); } /* blue-leaning indigo, not magenta-purple */
+    50%  { border-color: #FBBF24; box-shadow: 0 0 36px 0px rgba(251, 191, 36, 0.65); }
+    75%  { border-color: #34D399; box-shadow: 0 0 36px 0px rgba(52, 211, 153, 0.65); }
+    100% { border-color: #38BDF8; box-shadow: 0 0 36px 0px rgba(56, 189, 248, 0.65); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .kiosk-card { animation: none; border-color: var(--border); box-shadow: none; border-width: 1px; }
+}
+
+/* Border-chase accent: a fast light-blue sweep around the card border,
+   triggered by adding/removing .is-border-chasing from JS (see kiosk.js),
+   rather than :hover, since kiosk screens aren't touched with a mouse - the
+   accent needs to animate on its own. The gradient's start angle is animated
+   (not a transform: rotate on the whole element) so the border-ring mask
+   itself never moves - rotating the masked element too swings its square
+   corners outside the rounded card at certain angles. */
+@property --kiosk-chase-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+.kiosk-card::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    padding: 4px;
+    background: conic-gradient(from var(--kiosk-chase-angle), transparent 0deg, transparent 230deg, #7DD3FC 280deg, #38BDF8 320deg, #7DD3FC 350deg, transparent 360deg);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    filter: drop-shadow(0 0 6px #38BDF8);
+    pointer-events: none;
+}
+.kiosk-card.is-border-chasing::after {
+    opacity: 1;
+    animation: kioskBorderChase 1.1s linear;
+}
+.kiosk-card.is-border-chasing.is-chase-reverse::after {
+    animation-name: kioskBorderChaseReverse;
+}
+@keyframes kioskBorderChase {
+    from { --kiosk-chase-angle: 0deg; }
+    to { --kiosk-chase-angle: 360deg; }
+}
+@keyframes kioskBorderChaseReverse {
+    from { --kiosk-chase-angle: 360deg; }
+    to { --kiosk-chase-angle: 0deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .kiosk-card.is-border-chasing::after { animation: none; opacity: 0; }
+}
+
+/* Alternate accent: instead of a chasing dot, the whole border ring fades up
+   to a color and back down. Uses a separate ::before layer so it can play
+   independently of (or alongside) the chase sweep on ::after. Color is set
+   per-play from JS via --kiosk-glow-color for variety. */
+.kiosk-card::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    padding: 4px;
+    background: var(--kiosk-glow-color, #7DD3FC);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    pointer-events: none;
+}
+.kiosk-card.is-glow-pulse::before {
+    animation: kioskGlowPulse 1.7s ease-in-out;
+    filter: drop-shadow(0 0 10px var(--kiosk-glow-color, #7DD3FC));
+}
+@keyframes kioskGlowPulse {
+    0% { opacity: 0; }
+    40% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .kiosk-card.is-glow-pulse::before { animation: none; opacity: 0; }
+}
+
+.kiosk-card h2 {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+
+.kiosk-card p {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 300px;
+    margin-bottom: 30px;
+}
+
+.kiosk-qr-wrapper {
+    background: #fff;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 0 1px var(--accent-soft);
+}
+
+.kiosk-scanner-wrapper {
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 0 0 1px var(--accent-soft);
+}
+
+.kiosk-scanner-wrapper video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+}
+
+/* On mobile, stack the cards */
+@media (max-width: 768px) {
+    .kiosk-grid {
+        grid-template-columns: 1fr;
+        max-height: none;
+        gap: 20px;
+    }
+    .kiosk-card {
+        padding: 20px;
+    }
+    #kiosk-mode-container {
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+}
+
+/* Mobile kiosk: two big buttons instead of an always-on camera + QR side by
+   side (see startKioskMobileScan/showKioskMobileRegisterQR in kiosk.js). */
+.kiosk-mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 340px;
+    padding: 0 10px;
+}
+.kiosk-mobile-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    font-size: 0.95rem;
+}
+.kiosk-mobile-btn--scan {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+.kiosk-mobile-scan-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+}
+.kiosk-mobile-scan-overlay.is-active {
+    opacity: 1;
+}
+.kiosk-mobile-scan-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 340px;
+    transform: scale(0.92);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.kiosk-mobile-scan-overlay.is-active .kiosk-mobile-scan-box {
+    transform: scale(1);
+}
+.kiosk-mobile-scan-timer {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--accent);
+    margin-bottom: 14px;
+}
+
+
+.kiosk-header {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 2600;
+}
+
+.kiosk-header-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--fg);
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.kiosk-header-btn:hover {
+    background: rgba(255,255,255,0.16);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.kiosk-header-btn:active {
+    transform: scale(0.9);
+}
+body.light-theme .kiosk-header-btn {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--fg);
+}
+
+.kiosk-header-btn--finance {
+    background: rgba(56, 189, 248, 0.14);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #7DD3FC;
+}
+.kiosk-header-btn--finance:hover {
+    background: rgba(56, 189, 248, 0.22);
+    border-color: #38BDF8;
+    color: #7DD3FC;
+}
+body.light-theme .kiosk-header-btn--finance {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #0284C7;
+}
+
+/* Finance quick-entry panel: a button-based front end for the "GF"
+   spreadsheet's income/expense categories (see sheets-sync.js). */
+.kiosk-finance-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+}
+.kiosk-finance-overlay.is-active {
+    opacity: 1;
+}
+.kiosk-finance-box {
+    position: relative;
+    background: var(--surface);
+    width: 100%;
+    max-width: 420px;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 26px;
+    padding: 30px 24px 26px;
+    border: 1px solid var(--border);
+    transform: scale(0.92);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.4);
+    scrollbar-width: none;
+}
+.kiosk-finance-overlay.is-active .kiosk-finance-box {
+    transform: scale(1);
+}
+.kiosk-finance-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+.kiosk-finance-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+    margin: 20px 0 12px;
+}
+.kiosk-finance-title:first-of-type {
+    margin-top: 0;
+}
+.kiosk-finance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.kiosk-finance-cat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: var(--fg);
+    border-radius: 16px;
+    padding: 16px 10px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: system-ui, sans-serif;
+    transition: all 0.2s;
+}
+.kiosk-finance-cat i {
+    color: #38BDF8;
+    width: 22px;
+    height: 22px;
+}
+.kiosk-finance-cat:hover {
+    background: rgba(56, 189, 248, 0.18);
+    transform: translateY(-2px);
+}
+.kiosk-finance-cat--expense {
+    background: rgba(248, 113, 113, 0.1);
+    border-color: rgba(248, 113, 113, 0.3);
+}
+.kiosk-finance-cat--expense i {
+    color: #F87171;
+}
+.kiosk-finance-cat--expense:hover {
+    background: rgba(248, 113, 113, 0.18);
+}
+
+/* Quick amount-preset buttons inside the income entry modal (.modal-content) */
+.kf-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.kf-preset-btn {
+    flex: 1 1 auto;
+    min-width: 90px;
+    background: var(--accent-soft, rgba(212, 175, 55, 0.12));
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 14px;
+    padding: 10px 8px;
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.15s, background 0.2s;
+}
+.kf-preset-btn small {
+    display: block;
+    font-weight: 500;
+    opacity: 0.75;
+    font-size: 0.68rem;
+    margin-top: 2px;
+}
+.kf-preset-btn:hover {
+    background: var(--accent);
+    color: #000;
+}
+.kf-preset-btn:active {
+    transform: scale(0.96);
+}
+
+.kf-client-picker {
+    position: relative;
+}
+.kf-client-results {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow-lift, 0 10px 24px -8px rgba(0,0,0,0.35));
+    z-index: 5;
+    max-height: 180px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.kf-client-results.is-visible {
+    display: block;
+}
+.kf-client-result {
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    color: var(--fg);
+}
+.kf-client-result:hover {
+    background: var(--surface-soft);
+}
+.kf-client-result--empty {
+    color: var(--muted);
+    cursor: default;
+}
+.kf-client-result--empty:hover {
+    background: none;
+}
+.kf-client-hint {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin: 6px 0 0;
+    line-height: 1.4;
+}
+
+.scan-flash-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+}
+.scan-flash-overlay.success {
+    background: rgba(74, 222, 128, 0.8); /* green */
+}
+.scan-flash-overlay.error {
+    background: rgba(239, 68, 68, 0.8); /* red */
+}
+.scan-flash-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+.scan-flash-overlay .flash-message {
+    font-size: 1.5rem;
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease-out 0.1s;
+}
+.scan-flash-overlay.visible .flash-message {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#recent-scans-panel {
+    position: absolute;
+    top: 90px;
+    right: 20px;
+    width: 320px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    z-index: 2550;
+    padding: 15px;
+    display: none; /* Toggled by button */
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    scrollbar-width: none;
+}
+#recent-scans-panel.visible {
+    display: flex;
+}
+#recent-scans-panel h4 {
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin: 5px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border);
+}
+.recent-scans-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.recent-scan-section {
+    display: flex;
+    flex-direction: column;
+}
+.recent-scan-scroll {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 260px;
+    scrollbar-width: none;
+}
+.recent-scan-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.04);
+    padding: 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.recent-scan-item:hover {
+    background: rgba(255,255,255,0.08);
+}
+.recent-scan-item .trash-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 5px;
+}
+.recent-scan-item .trash-btn:hover {
+    color: #ef4444;
+}
+.recent-scan-item.declined .scan-item-name {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* Kiosk client profile popup: same visual language as the admin "Клиенты"
+   profile card (.profile-container etc.), just wrapped in a scrollable
+   modal box instead of a full page, since kiosk mode can't navigate away
+   from the scan screen. */
+.kiosk-profile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+}
+.kiosk-profile-overlay.is-active {
+    opacity: 1;
+}
+.kiosk-profile-box {
+    position: relative;
+    background: var(--surface);
+    width: 100%;
+    max-width: 400px;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 26px;
+    padding: 30px 26px 26px;
+    border: 1px solid var(--border);
+    transform: scale(0.92);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.4);
+    scrollbar-width: none;
+}
+.kiosk-profile-overlay.is-active .kiosk-profile-box {
+    transform: scale(1);
+}
+.kiosk-profile-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+.kiosk-profile-qr-btn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* Streak leaderboard: a real full-page section (like Профиль/Расписание),
+   not a popup, styled as a plain, structured ranking list - a stats strip,
+   a labeled rank/name/streak header, and slim rows - so it reads as a
+   serious record of standings rather than a decorated game widget. */
+.leaderboard-container {
+    /* Fills .content's own box, same as .schedule-container/.profile-container
+       etc - no viewport-breakout tricks. Those relied on .content's rendered
+       width always matching the real viewport, which only holds on an actual
+       phone; in any wider window (desktop browser, tablet, resizable test
+       viewport) .content is capped at max-width:400px and centered, so a
+       100vw-wide element positioned off that assumption drifts sideways and
+       clips its own left edge. */
+    width: 100%;
+    min-height: calc(100vh - 154px);
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 20px;
+}
+@media (min-width: 768px) {
+    /* On a real desktop/tablet viewport this should look like every other
+       section (Расписание, Профиль, Планировщик): a roomy, centered
+       max-900px column - not squeezed down to a narrow phone-width strip. */
+    body.show-nav .leaderboard-container {
+        max-width: 900px;
+        margin: 0 auto;
+        min-height: calc(100vh - 154px);
+    }
+    /* Scale the list itself up to fill that extra room instead of leaving
+       a phone-sized column floating in the middle of the page. */
+    body.show-nav .leaderboard-subtitle { font-size: 0.92rem; margin: 22px 0 26px; }
+    body.show-nav .leaderboard-stats { padding: 20px 28px; gap: 32px; margin-bottom: 22px; }
+    body.show-nav .leaderboard-stat-value { font-size: 1.6rem; }
+    body.show-nav .leaderboard-stat-label { font-size: 0.74rem; }
+    body.show-nav .leaderboard-list-header,
+    body.show-nav .leaderboard-row {
+        grid-template-columns: 40px 54px 1fr auto;
+        gap: 18px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    body.show-nav .leaderboard-row { padding-top: 14px; padding-bottom: 14px; }
+    body.show-nav .leaderboard-row-avatar { width: 44px; height: 44px; }
+    body.show-nav .leaderboard-row-name { font-size: 0.98rem; }
+    body.show-nav .leaderboard-row-streak { font-size: 0.95rem; }
+    body.show-nav .leaderboard-rank { font-size: 0.92rem; }
+}
+.leaderboard-subtitle {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin: 18px 0 22px;
+    line-height: 1.4;
+}
+.leaderboard-body {
+    flex: 1;
+}
+.leaderboard-loading, .leaderboard-empty {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 30px 10px;
+}
+
+/* Two-figure stats strip (best streak / participant count) up top, in
+   place of an illustrated hero - reads like a report summary. */
+.leaderboard-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    border-radius: 14px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+}
+.leaderboard-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 90px;
+}
+.leaderboard-stat-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+}
+.leaderboard-stat-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--muted);
+}
+.leaderboard-stat-sep {
+    width: 1px;
+    align-self: stretch;
+    background: var(--border);
+}
+
+.leaderboard-own-card {
+    margin-top: 16px;
+    text-align: center;
+    padding: 16px;
+    border-radius: 14px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+}
+.leaderboard-own-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+.leaderboard-own-streak {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--fg);
+    margin-bottom: 6px;
+}
+.leaderboard-own-streak svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--accent);
+    color: var(--accent);
+}
+.leaderboard-own-hint {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.leaderboard-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.leaderboard-avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Column header labels above the list, matching the row grid below. */
+.leaderboard-list-header {
+    display: grid;
+    grid-template-columns: 30px 46px 1fr auto;
+    gap: 14px;
+    padding: 0 18px 8px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+}
+.leaderboard-list-header span:nth-child(2) { visibility: hidden; }
+.leaderboard-list-header span:last-child { text-align: right; }
+
+/* One person per row - a plain numbered rank column, avatar, name, and
+   streak count, in a tight bordered list rather than separate cards. */
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+.leaderboard-row {
+    display: grid;
+    grid-template-columns: 30px 46px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 11px 18px;
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--border);
+}
+.leaderboard-row:last-child { border-bottom: none; }
+.leaderboard-row.is-me {
+    background: var(--accent-soft, rgba(212,175,55,0.10));
+}
+.leaderboard-row.rank-1 .leaderboard-rank { color: #C9A227; font-weight: 800; }
+.leaderboard-row.rank-2 .leaderboard-rank { color: #9AA0A6; font-weight: 800; }
+.leaderboard-row.rank-3 .leaderboard-rank { color: #B07A4B; font-weight: 800; }
+.leaderboard-rank {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+.leaderboard-row-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.leaderboard-row-avatar .leaderboard-avatar-fallback {
+    font-size: 0.9rem;
+}
+.leaderboard-row-name {
+    min-width: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--fg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.leaderboard-you-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #000;
+    font-size: 0.6rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 5px;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+.leaderboard-row-streak {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--fg);
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+}
+.leaderboard-row-streak svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--accent);
+    color: var(--accent);
+}
+
+/* Small print in the corner of the kiosk pointing admins at the feedback
+   tab - deliberately subtle (low opacity, tiny) so it doesn't compete with
+   the actual registration/scan flow clients use. */
+.kiosk-feedback-hint {
+    position: absolute;
+    bottom: 10px;
+    left: 16px;
+    right: 16px;
+    max-width: 480px;
+    font-size: 0.62rem;
+    line-height: 1.4;
+    color: var(--muted);
+    opacity: 0.55;
+    z-index: 2500;
+    pointer-events: none;
+}
+@media (max-width: 768px) {
+    .kiosk-feedback-hint { display: none; }
+}
+
+/* Recents button gets its own warm, "history"-appropriate tint distinct
+   from the neutral header buttons and the blue finance button. */
+.kiosk-header-btn--recents {
+    background: rgba(214, 188, 152, 0.16);
+    border-color: rgba(214, 188, 152, 0.4);
+    color: #D6BC98;
+}
+.kiosk-header-btn--recents:hover {
+    background: rgba(214, 188, 152, 0.24);
+    border-color: #D6BC98;
+    color: #D6BC98;
+}
+body.light-theme .kiosk-header-btn--recents {
+    background: rgba(180, 140, 90, 0.14);
+    border-color: rgba(180, 140, 90, 0.4);
+    color: #8a6a45;
+}
+
+/* Cash/card picker: two icon buttons instead of a <select>, used wherever a
+   modal needs a payment method (see renderMethodToggleHtml/wireMethodToggle
+   in kiosk.js). */
+.method-toggle {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+.method-toggle-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 8px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--surface-soft);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s var(--ease, ease);
+}
+.method-toggle-btn svg {
+    width: 20px;
+    height: 20px;
+}
+.method-toggle-btn span {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.method-toggle-btn.is-active {
+    border-color: var(--accent);
+    background: var(--accent-soft, rgba(212, 175, 55, 0.14));
+    color: var(--accent);
+}
+.method-toggle-btn:active {
+    transform: scale(0.96);
+}
